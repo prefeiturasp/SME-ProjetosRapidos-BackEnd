@@ -9,6 +9,7 @@ local_timezone = pytz.timezone(settings.TIME_ZONE)
 
 class ContactMessage(models.Model):
     ''' Classe que representa uma mensagem de contato '''
+
     name = models.CharField(_("Nome"), max_length=44, null=False, blank=False)
     email = models.CharField(
         _("E-mail"), max_length=255, null=False, blank=False)

@@ -4,6 +4,7 @@ from django.conf import settings
 from rest_framework import routers
 
 from general import urls as general_routes
+from project_request import urls as project_request_routes
 
 if settings.DEBUG:
     router = routers.DefaultRouter()
@@ -12,6 +13,7 @@ else:
 
 routeLists = [
     general_routes.routeList,
+    project_request_routes.routeList
 ]
 
 for routeList in routeLists:
