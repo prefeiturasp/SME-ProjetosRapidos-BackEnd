@@ -7,7 +7,7 @@ from general.tests.tests_models import SetupData
 from general.models import ContactMessage
 
 
-class SellerViewSetTestCase(TestCase):
+class ContactMessageViewSetTestCase(TestCase):
 
     entity = ContactMessage
     base_route = '/api/contact_message'
