@@ -6,6 +6,10 @@ from rest_framework import routers
 from general import urls as general_routes
 from project_request import urls as project_request_routes
 
+admin.site.site_title = 'Projetos rápidos'
+admin.site.site_header = 'Projetos rápidos'
+admin.site.index_title = 'Projetos rápidos ADMIN'
+
 if settings.DEBUG:
     router = routers.DefaultRouter()
 else:
