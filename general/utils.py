@@ -1,40 +1,38 @@
-from general.email import send_email_support
+import sys
+from django.template.loader import render_to_string
+from django.template import Context
+from django.core.mail import EmailMessage
+from django.conf import settings
 
 
-def send_email_new_contact_message():
-    message = """
-        <body class="bg-light">
-        <div class="container">
-            <img class="ax-center my-10 w-24" src="https://assets.bootstrapemail.com/logos/light/square.png" />
-            <div class="card p-6 p-lg-10 space-y-4">
-            <h1 class="h3 fw-700">
-                Simple Card
-            </h1>
-            <p>
-                Here is a very simple card. It has responsive padding so it gets less padding on mobile to fill the screen more.
-                Hopefully it can be useful to you. It is very simple and basic but can be used for a lot of simple emails.
-            </p>
-            <a class="btn btn-primary p-3 fw-700" href="https://app.bootstrapemail.com/templates">Visit Website</a>
-            </div>
-            <img class="ax-center mt-10 w-40" src="https://assets.bootstrapemail.com/logos/light/text.png" />
-            <div class="text-muted text-center my-6">
-            Sent with <3 from Hip Corp. <br>
-            Hip Corp. 1 Hip Street<br>
-            Gnarly State, 01234 USA <br>
-            </div>
-        </div>
-        </body>
-    """
-    send_email_support(
-        "[Projetos Rápidos] Nova mensagem",
-        message,
-        recipient_list=["idscotic@sme.prefeitura.sp.gov.br"]
-    )
-    #
-    # Olá,
+def send_email_new_contact_message(data):
+    html_template = 'simple_message.html'
 
-    # Você recebeu uma nova mensagem pelo formulário de contato:
+    phone = "-" if data.phone is None else data.phone
+    coordenadoria = "-" if data.coordenadoria is None else data.coordenadoria
 
-    # *|DADOS CADASTRADOS NA MENSAGEM - CRITÉRIO 1.2|*
+    list_info = """
+        <ul style="margin:0;padding:0">
+            <li><strong>Nome</strong> {}</li>
+            <li><strong>E-mail</strong> {}</li>
+            <li><strong>Telefone</strong> {}</li>
+            <li><strong>Coordenadoria</strong> {}</li>
+            <li><strong>Mensagem</strong> {}</li>
+        </ul>
+    """.format(data.name, data.email, phone, coordenadoria, data.message)
 
-    # Obrigado
+    dict = {
+        'subject': '[Projetos Rápidos] Nova mensagem',
+        'subtitle': 'Você recebeu uma nova mensagem pelo formulário de contato:',
+        'body': list_info
+    }
+    try:
+        context = Context(dict)
+        content = render_to_string(html_template, {'context': context})
+        send_email = EmailMessage(dict['subject'], content, settings.DEFAULT_FROM_EMAIL, [
+                                  settings.DEFAULT_TO_EMAIL])
+        send_email.content_subtype = 'html'
+        send_email.send()
+    except:
+        print('erro send_email_new_contact_message', sys.exc_info()[0])
+        raise

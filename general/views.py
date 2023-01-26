@@ -15,6 +15,7 @@ class ContactMessageViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            # send_email_new_contact_message()
+            instance = ContactMessage.objects.get(pk=serializer.data['id'])
+            send_email_new_contact_message(instance)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
