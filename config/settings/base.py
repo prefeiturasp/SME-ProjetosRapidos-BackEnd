@@ -9,17 +9,24 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+
 import os
 import environ
-from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = (
+    environ.Path(__file__) - 3
+)
+
+# Environ
+# https://django-environ.readthedocs.io/en/latest/
 
 env = environ.Env()
 
-# Take environment variables from .env file
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+try:
+    env.read_env(str(BASE_DIR.path('.env')))
+except FileNotFoundError:
+    pass
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -123,6 +130,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 6,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -148,14 +158,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static/'),
-)
+# STATIC_URL = 'static/'
+# STATIC_ROOT = str(BASE_DIR('staticfiles'))
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static/'),
+# )
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'docs')
-MEDIA_URL = '/docs/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+# MEDIA
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#media-root
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -163,15 +180,15 @@ MEDIA_URL = '/docs/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email
+# https://docs.djangoproject.com/en/4.1/topics/email/
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'rayanesantostestes@gmail.com'
-EMAIL_HOST_PASSWORD = 'etipuscscclhvoim'
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = env('EMAIL_USE_TLS')
+EMAIL_USE_SSL = env('EMAIL_USE_SSL')
 DEFAULT_FROM_EMAIL = 'noreply@sme.prefeitura.sp.gov.br'
 FROM_EMAIL = 'noreply@sme.prefeitura.sp.gov.br'
 DEFAULT_TO_EMAIL = 'idscotic@sme.prefeitura.sp.gov.br.'
