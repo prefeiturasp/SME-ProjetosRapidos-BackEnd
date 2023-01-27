@@ -1,7 +1,6 @@
 from .base import *
-from .base import env
 
-ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
+DEFAULT_TO_EMAIL = 'idscotic@sme.prefeitura.sp.gov.br.'
 
 # LOGGING
 # ------------------------------------------------------------------------------

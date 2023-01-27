@@ -41,8 +41,9 @@ SECRET_KEY = env(
 DEBUG = env.bool("DJANGO_DEBUG", False)
 
 # CORS CONFIG
-ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
-CORS_ORIGIN_ALLOW_ALL = True
+# https://pypi.org/project/django-cors-headers/
+
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=['*'])
 
 # Application definition
 
@@ -156,13 +157,7 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-# STATIC_URL = 'static/'
-# STATIC_ROOT = str(BASE_DIR('staticfiles'))
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static/'),
-# )
+# https://docs.djangoproject.com/en/4.1/howto/static-files
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
@@ -183,12 +178,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # https://docs.djangoproject.com/en/4.1/topics/email/
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = env('EMAIL_USE_TLS')
-EMAIL_USE_SSL = env('EMAIL_USE_SSL')
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')
+EMAIL_USE_SSL = env.bool('EMAIL_USE_SSL')
+
 DEFAULT_FROM_EMAIL = 'noreply@sme.prefeitura.sp.gov.br'
 FROM_EMAIL = 'noreply@sme.prefeitura.sp.gov.br'
-DEFAULT_TO_EMAIL = 'idscotic@sme.prefeitura.sp.gov.br.'

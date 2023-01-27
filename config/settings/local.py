@@ -6,3 +6,5 @@ DEBUG = env('DJANGO_DEBUG', default=True)
 
 # https://pypi.org/project/django-cors-headers/
 CORS_ORIGIN_ALLOW_ALL = True
+
+DEFAULT_TO_EMAIL = env('DJANGO_DEFAULT_TO_EMAIL')
