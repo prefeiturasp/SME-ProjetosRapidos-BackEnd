@@ -1,6 +1,8 @@
 from .base import *
 
 DEFAULT_TO_EMAIL = 'idscotic@sme.prefeitura.sp.gov.br.'
+
+# https://docs.djangoproject.com/en/4.1/ref/settings/#csrf-trusted-origins
 CSRF_TRUSTED_ORIGINS = ['https://*.sme.prefeitura.sp.gov.br']
 
 # LOGGING
