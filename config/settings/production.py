@@ -1,6 +1,9 @@
 from .base import *
 
-DEFAULT_TO_EMAIL = 'idscotic@sme.prefeitura.sp.gov.br.'
+DEFAULT_TO_EMAIL = env(
+    'DJANGO_DEFAULT_TO_EMAIL',
+    default='idscotic@sme.prefeitura.sp.gov.br.'
+)
 
 # LOGGING
 # ------------------------------------------------------------------------------

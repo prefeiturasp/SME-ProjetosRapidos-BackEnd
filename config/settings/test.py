@@ -1,4 +1,6 @@
 from .base import *
 
-# configs ambiente homolog
-DEFAULT_TO_EMAIL = env('DJANGO_DEFAULT_TO_EMAIL')
+# EMAIL
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
+
+EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.locmem.EmailBackend')
