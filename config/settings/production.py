@@ -1,7 +1,6 @@
 from .base import *
 
 DEFAULT_TO_EMAIL = 'idscotic@sme.prefeitura.sp.gov.br.'
-
 CSRF_TRUSTED_ORIGINS = ['https://*.sme.prefeitura.sp.gov.br']
 
 # LOGGING
