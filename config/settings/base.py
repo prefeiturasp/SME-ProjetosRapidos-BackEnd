@@ -197,3 +197,11 @@ EMAIL_USE_SSL = env.bool('EMAIL_USE_SSL')
 
 DEFAULT_FROM_EMAIL = 'noreply@sme.prefeitura.sp.gov.br'
 FROM_EMAIL = 'noreply@sme.prefeitura.sp.gov.br'
+
+# Rest framework
+# https://www.django-rest-framework.org/api-guide/settings/
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication'
+    ]
+}
