@@ -12,8 +12,10 @@ class ProjectRequest(models.Model):
 
     # dados do contratante
     name = models.CharField(_("Nome"), max_length=44, null=False, blank=False)
-    contact = models.CharField(
-        _("Contato"), max_length=255, null=False, blank=False)
+    email = models.CharField(
+        _("E-mail"), max_length=255, null=False, blank=False)
+    phone = models.CharField(
+        _("Telefone"), max_length=13, null=True, blank=True)
     responsible_name = models.CharField(
         _("Nome do responsável"), max_length=44, null=False, blank=False)
     coordenadoria = models.CharField(
@@ -42,6 +44,20 @@ class ProjectRequest(models.Model):
     def __str__(self):
         return '{} - {}...'.format(self.name, self.demand_type[:20])
 
+    def save(self, *args, **kwargs):
+        self.format_phone()
+        return super(ProjectRequest, self).save(*args, **kwargs)
+
     class Meta:
         verbose_name = _('solicitação de projeto')
         verbose_name_plural = _('solicitações de projeto')
+
+    def format_phone(self):
+        '''
+        Retorna phone sem formatação (somente números)
+        :return: phone
+        '''
+        if self.phone:
+            self.phone = re.sub('[()/-/+]', '', self.phone)
+            self.phone = self.phone.replace(" ", "")
+            self.phone = self.phone[-11:]

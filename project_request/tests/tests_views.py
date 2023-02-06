@@ -20,7 +20,8 @@ class ProjectRequestViewSetTestCase(TestCase):
     def test_post(self):
         payload = {
             "name": "José Carlos",
-            "contact": "josecarlos@gmail.com",
+            "email": "josecarlos@gmail.com",
+            "phone": "85986204006",
             "responsible_name": "José Carlos",
             "coordenadoria": "COTIC",
             "demand": "Projeto dia das crianças",
@@ -35,6 +36,5 @@ class ProjectRequestViewSetTestCase(TestCase):
 
         response = self.client.post(
             self.base_route + '/', data=payload, follow=True, format="json")
-
         self.assertTrue(status.is_success(response.status_code))
         self.assertTrue("id" in response.json())
