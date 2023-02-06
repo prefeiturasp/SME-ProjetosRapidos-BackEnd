@@ -7,7 +7,8 @@ class SetupData:
     def create_instance(self):
         obj = {
             "name": "José Carlos",
-            "contact": "josecarlos@gmail.com",
+            "email": "josecarlos@gmail.com",
+            "phone": "85986204006",
             "responsible_name": "José Carlos",
             "coordenadoria": "COTIC",
             "demand": "Projeto dia das crianças",

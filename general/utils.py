@@ -1,13 +1,8 @@
-import sys
-from django.template.loader import render_to_string
-from django.template import Context
-from django.core.mail import EmailMessage
 from django.conf import settings
+from config.utils import email_utils
 
 
 def send_email_new_contact_message(data):
-    html_template = 'simple_message.html'
-
     phone = "-" if data.phone is None else data.phone
     coordenadoria = "-" if data.coordenadoria is None else data.coordenadoria
 
@@ -23,16 +18,13 @@ def send_email_new_contact_message(data):
 
     dict = {
         'subject': '[Projetos Rápidos] Nova mensagem',
+        'title': 'Olá!',
         'subtitle': 'Você recebeu uma nova mensagem pelo formulário de contato:',
         'body': list_info
     }
-    try:
-        context = Context(dict)
-        content = render_to_string(html_template, {'context': context})
-        send_email = EmailMessage(dict['subject'], content, settings.DEFAULT_FROM_EMAIL, [
-                                  settings.DEFAULT_TO_EMAIL])
-        send_email.content_subtype = 'html'
-        send_email.send()
-    except:
-        print('erro send_email_new_contact_message', sys.exc_info()[0])
-        raise
+    email_utils.send_email_ctrl(
+        '[Projetos Rápidos] Nova mensagem',
+        dict,
+        'simple_message.html',
+        settings.DEFAULT_TO_EMAIL
+    )
