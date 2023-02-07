@@ -1,11 +1,6 @@
-import pytz
-import re
-from datetime import timezone, datetime
-from django.conf import settings
+from datetime import datetime
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-local_timezone = pytz.timezone(settings.TIME_ZONE)
 
 
 class Section(models.Model):

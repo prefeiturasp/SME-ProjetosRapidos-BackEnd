@@ -1,5 +1,8 @@
+import pytz
 from django.conf import settings
 from config.utils import email_utils
+
+local_timezone = pytz.timezone(settings.TIME_ZONE)
 
 
 def send_email_new_request_message_admin():
@@ -36,7 +39,7 @@ def send_email_new_request_message(data):
             <li><strong>Existem fatores externos que continuam impactando o usuário, apesar da construção de um sistema/portal, como burocracias ou outros sistemas? Em caso afirmativo, explique melhor</strong> {}</li>            
             <li><strong>Quais funcionalidades você entende que o sistema deve disponibilizar?</strong> {}</li>            
         </ul>
-    """.format(data.register_datetime.strftime('%d/%m/%y %H:%M'), data.name, data.email, data.phone, data.coordenadoria, data.responsible_name,
+    """.format(data.register_datetime.astimezone(local_timezone).strftime('%d/%m/%y %H:%M'), data.name, data.email, data.phone, data.coordenadoria, data.responsible_name,
                data.demand, data.demand_type, data.approx_release_date.strftime('%d/%m/%y'), data.target_users, data.approx_quantity_users,
                data.users_actions, data.external_factors, data.functionalities)
 
