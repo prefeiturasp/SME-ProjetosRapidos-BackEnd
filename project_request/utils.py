@@ -10,7 +10,7 @@ def send_email_new_request_message_admin():
         'subject': '[Projetos Rápidos] Novo cadastro',
         'title': 'Olá!',
         'subtitle': '''Um novo cadastro da frente de Projetos Rápidos foi realizado.
-                       Acesse www.projetosrapidos.sme.prefeitura.sp.gov.br/admin para visualizá-lo.'''
+                       Acesse https://projetosrapidos.sme.prefeitura.sp.gov.br/admin para visualizá-lo.'''
     }
     email_utils.send_email_ctrl(
         '[Projetos Rápidos] Novo cadastro',
