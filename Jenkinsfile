@@ -6,9 +6,11 @@ pipeline {
       namespace = "${env.branchname == 'develop' ? 'projetosrapidos-dev' : env.branchname == 'homolog' ? 'projetosrapidos-hom' : env.branchname == 'homolog-r2' ? 'projetosrapidos-hom2' : 'sme-projetosrapidos' }"
     }
   
-    agent {
-      node { label 'python-36-rc' }
-    }
+    agent { kubernetes { 
+              label 'python36'
+              defaultContainer 'builder'
+            }
+          }
 
     options {
       buildDiscarder(logRotator(numToKeepStr: '15', artifactNumToKeepStr: '15'))
@@ -34,8 +36,14 @@ pipeline {
         }        
 
         stage('Build') {
-          when { anyOf { branch 'master'; branch 'main'; branch "story/*"; branch 'development'; branch 'develop'; branch 'release'; branch 'homolog';  } } 
+          when { anyOf { branch 'master'; branch 'main'; branch "story/*"; branch 'development'; branch 'develop'; branch 'release'; branch 'homolog';  } }
+          agent { kubernetes { 
+              label 'builder'
+              defaultContainer 'builder'
+            }
+          } 
           steps {
+          checkout scm
             script {
               imagename1 = "registry.sme.prefeitura.sp.gov.br/${env.branchname}/projetosrapidos-back"
               dockerImage1 = docker.build(imagename1, "-f Dockerfile .")
@@ -48,8 +56,14 @@ pipeline {
         }
         
         stage('Deploy'){
-            when { anyOf {  branch 'master'; branch 'main'; branch 'develop'; branch 'development'; branch 'release'; branch 'homolog';  } }        
+            when { anyOf {  branch 'master'; branch 'main'; branch 'develop'; branch 'development'; branch 'release'; branch 'homolog';  } }
+            agent { kubernetes { 
+              label 'builder'
+              defaultContainer 'builder'
+            }
+          }        
             steps {
+            checkout scm
                 script{                        
                     withCredentials([file(credentialsId: "${kubeconfig}", variable: 'config')]){
                         sh('cp $config '+"$home"+'/.kube/config')
